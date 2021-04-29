@@ -17,13 +17,17 @@ public class JurassicPark {
         try (Connection cnx = dataSource.getConnection();
              Statement stmt = cnx.createStatement();
              ResultSet rs = stmt.executeQuery("select breed from dinosaur where actual > expected")) {
-             List<String> namesOfDinos = new ArrayList<>();
-             while(rs.next()) {
-                 namesOfDinos.add(rs.getString("breed"));
-             }
-             return namesOfDinos;
+            return getNamesFromStatement(rs);
         } catch (SQLException se) {
             throw new IllegalStateException("Cannot load database", se);
         }
+    }
+
+    private List<String> getNamesFromStatement(ResultSet rs) throws SQLException {
+        List<String> namesOfDinos = new ArrayList<>();
+        while(rs.next()) {
+            namesOfDinos.add(rs.getString("breed"));
+        }
+        return namesOfDinos;
     }
 }
